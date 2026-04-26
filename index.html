@@ -486,10 +486,11 @@ function resize() {
   canvas.style.height = H + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  // Scale orbital system for smaller screens so all planets remain visible.
-  const designMaxOrbit = 840; 
-  const availableSpace = Math.min(W, H) * (isTouchDevice ? 0.42 : 0.48);
-  orbitScale = Math.min(1.1, availableSpace / designMaxOrbit);
+  // Scale orbital system for smaller screens. 
+  // designMaxOrbit matches the outermost orbit (Resume) for perfect fit.
+  const designMaxOrbit = 660; 
+  const availableSpace = Math.min(W, H) * (isTouchDevice ? 0.46 : 0.52);
+  orbitScale = Math.min(1.2, availableSpace / designMaxOrbit);
 }
 resize();
 window.addEventListener('resize', resize);
@@ -791,15 +792,15 @@ const PANEL_DATA = {
 };
 
 const planets = [
-  { id: 'about',      label: 'ABOUT',      orbitR: 220, angle: 0.0, speed: 0.00040, r: 18, color: '#67b7ff', glow: '#67b7ff' },
-  { id: 'skills',     label: 'SKILLS',     orbitR: 300, angle: 0.8, speed: 0.00033, r: 14, color: '#ffb86b', glow: '#ffb86b' },
-  { id: 'projects',   label: 'PROJECTS',   orbitR: 380, angle: 1.7, speed: 0.00027, r: 20, color: '#b892ff', glow: '#b892ff' },
-  { id: 'services',   label: 'SERVICES',   orbitR: 450, angle: 2.6, speed: 0.00022, r: 15, color: '#7df0cc', glow: '#7df0cc' },
-  { id: 'experience', label: 'EXPERIENCE', orbitR: 520, angle: 3.4, speed: 0.00018, r: 16, color: '#86e3ff', glow: '#86e3ff' },
-  { id: 'education',  label: 'EDUCATION',  orbitR: 590, angle: 4.2, speed: 0.00015, r: 14, color: '#ffe27a', glow: '#ffe27a' },
-  { id: 'languages',  label: 'LANGUAGES',  orbitR: 660, angle: 5.1, speed: 0.00012, r: 13, color: '#ff9fbb', glow: '#ff9fbb' },
-  { id: 'contact',    label: 'CONTACT',    orbitR: 730, angle: 5.8, speed: 0.00010, r: 12, color: '#ff6f91', glow: '#ff6f91' },
-  { id: 'resume',     label: 'RESUME',     orbitR: 820, angle: 6.4, speed: 0.00007, r: 22, color: '#000000', glow: '#a855f7' },
+  { id: 'about',      label: 'ABOUT',      orbitR: 150, angle: 0.0, speed: 0.00040, r: 18, color: '#67b7ff', glow: '#67b7ff' },
+  { id: 'skills',     label: 'SKILLS',     orbitR: 210, angle: 0.8, speed: 0.00033, r: 14, color: '#ffb86b', glow: '#ffb86b' },
+  { id: 'projects',   label: 'PROJECTS',   orbitR: 270, angle: 1.7, speed: 0.00027, r: 20, color: '#b892ff', glow: '#b892ff' },
+  { id: 'services',   label: 'SERVICES',   orbitR: 330, angle: 2.6, speed: 0.00022, r: 15, color: '#7df0cc', glow: '#7df0cc' },
+  { id: 'experience', label: 'EXPERIENCE', orbitR: 390, angle: 3.4, speed: 0.00018, r: 16, color: '#86e3ff', glow: '#86e3ff' },
+  { id: 'education',  label: 'EDUCATION',  orbitR: 450, angle: 4.2, speed: 0.00015, r: 14, color: '#ffe27a', glow: '#ffe27a' },
+  { id: 'languages',  label: 'LANGUAGES',  orbitR: 510, angle: 5.1, speed: 0.00012, r: 13, color: '#ff9fbb', glow: '#ff9fbb' },
+  { id: 'contact',    label: 'CONTACT',    orbitR: 570, angle: 5.8, speed: 0.00010, r: 12, color: '#ff6f91', glow: '#ff6f91' },
+  { id: 'resume',     label: 'RESUME',     orbitR: 640, angle: 6.4, speed: 0.00007, r: 22, color: '#000000', glow: '#a855f7' },
 ];
 
 // =========================================
@@ -858,8 +859,8 @@ function drawOrbit(cx, cy, r, active) {
 }
 
 function drawSun(cx, cy) {
-  // Use a more aggressive minimum scale for the sun on mobile to prevent overlapping
-  const sunR = sun.r * Math.max(0.4, orbitScale);
+  // Keep the sun larger and more imposing
+  const sunR = sun.r * Math.max(0.65, orbitScale);
   // Outer glow layers
   [1.6, 1.25, 0.95].forEach((ratio, i) => {
     const r = sunR * ratio;
@@ -932,8 +933,8 @@ function drawPlanet(p, cx, cy) {
   const py = baseY - (dy / dist) * pull;
 
   const isHovered = hoveredPlanet === p;
-  // Scale down base radius more aggressively on mobile to match the sun
-  const baseR = p.r * Math.max(0.4, orbitScale); 
+  // Keep planets larger for better visibility and interaction
+  const baseR = p.r * Math.max(0.75, orbitScale); 
   const scale = (isHovered ? 1.32 : 1 + easedStrength * 0.1) * perspective;
   const radius = baseR * scale;
 
